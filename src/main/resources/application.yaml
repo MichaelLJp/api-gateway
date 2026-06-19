@@ -16,43 +16,65 @@ spring:
 
   cloud:
     gateway:
-      discovery:
-        locator:
-          enabled: true
-          lower-case-service-id: true
+      server:
+        webflux:
+          discovery:
+            locator:
+              enabled: true
+              lower-case-service-id: true
 
-      default-filters:
-        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+          default-filters:
+            - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
 
-      globalcors:
-        cors-configurations:
-          '[/**]':
-            allowedOrigins: "*"
-            allowedHeaders: "*"
-            allowedMethods:
-              - POST
+          globalcors:
+            cors-configurations:
+              '[/**]':
+                allowedOrigins: "*"
+                allowedHeaders: "*"
+                allowedMethods:
+                  - POST
 
-      routes:
-        - id: catalogue
-          uri: lb://catalogue-service
-          predicates:
-            - Path=/catalogue/**
-            - Method=POST
-          filters:
-            - StripPrefix=1
+          routes:
+            - id: users
+              uri: lb://users-service
+              predicates:
+                - Path=/users/**
+                - Method=POST
+              filters:
+                - StripPrefix=1
 
-        - id: orders
-          uri: lb://orders-service
-          predicates:
-            - Path=/orders/**
-            - Method=POST
-          filters:
-            - StripPrefix=1
+            - id: catalogue
+              uri: lb://catalogue-service
+              predicates:
+                - Path=/catalogue/**
+                - Method=POST
+              filters:
+                - StripPrefix=1
+
+            - id: orders
+              uri: lb://orders-service
+              predicates:
+                - Path=/orders/**
+                - Method=POST
+              filters:
+                - StripPrefix=1
+
+            - id: comms
+              uri: lb://comms-service
+              predicates:
+                - Path=/comms/**
+                - Method=POST
+              filters:
+                - StripPrefix=1
+
+app:
+  gateway:
+    public-paths: /users/api/v1/auth/token,/users/api/v1/users,/catalogue/api/v1/books,/actuator
 
 management:
   endpoint:
     gateway:
-      enabled: true
+      access: read_only
   endpoints:
     web:
       exposure:

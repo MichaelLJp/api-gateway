@@ -43,6 +43,12 @@
 			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
 		</dependency>
 
+		<!-- Load Balancer (necesario para WebClient con lb://) -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-loadbalancer</artifactId>
+		</dependency>
+
 		<!-- WebFlux (necesario para Gateway) -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
